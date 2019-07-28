@@ -1,0 +1,17 @@
+{
+  "name": "eventsdb-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "tasks.max": "1",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "connection.url": "jdbc:postgresql://postgresql:5432/eventsdb",
+    "connection.user": "postgres",
+    "connection.password": "postgres",
+    "table.whitelist": "events",
+    "topic.prefix": "stream-",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": false
+  }
+}
