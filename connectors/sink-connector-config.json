@@ -1,0 +1,18 @@
+{
+  "name": "tasks-sink-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "topics": "output-tasks",
+    "auto.create": true,
+    "table.name.format": "tasks",
+    "connection.url": "jdbc:postgresql://postgresql:5432/eventsdb",
+    "connection.user": "postgres",
+    "connection.password": "postgres",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true
+  }
+}

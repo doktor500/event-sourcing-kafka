@@ -1,5 +1,5 @@
 {
-  "name": "eventsdb-connector",
+  "name": "events-source-connector",
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
     "tasks.max": "1",
@@ -9,9 +9,14 @@
     "connection.user": "postgres",
     "connection.password": "postgres",
     "table.whitelist": "events",
-    "topic.prefix": "stream-",
+    "topic.prefix": "input-",
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "key.converter.schemas.enable": false,
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": false
+    "value.converter.schemas.enable": false,
+    "transforms": "createKey",
+    "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.createKey.fields": "task_id",
+    "validate.non.null": false
   }
 }
