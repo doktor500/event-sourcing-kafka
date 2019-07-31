@@ -14,9 +14,11 @@
     "key.converter.schemas.enable": false,
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schemas.enable": false,
-    "transforms": "createKey",
-    "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
-    "transforms.createKey.fields": "task_id",
-    "validate.non.null": false
+    "transforms": "replaceKey,extractKey",
+    "transforms.replaceKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.replaceKey.fields": "task_id",
+    "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.extractKey.field": "task_id",
+    "poll.interval.ms": "10"
   }
 }

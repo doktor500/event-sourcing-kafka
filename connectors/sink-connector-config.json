@@ -8,6 +8,7 @@
     "pk.fields": "id",
     "topics": "output-tasks",
     "auto.create": true,
+    "auto.evolve": true,
     "table.name.format": "tasks",
     "connection.url": "jdbc:postgresql://postgresql:5432/eventsdb",
     "connection.user": "postgres",

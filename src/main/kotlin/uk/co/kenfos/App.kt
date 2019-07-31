@@ -10,9 +10,9 @@ import org.apache.kafka.streams.kstream.Materialized
 import org.apache.kafka.streams.kstream.Produced
 import org.apache.kafka.streams.state.KeyValueStore
 import uk.co.kenfos.domain.Message
-import uk.co.kenfos.domain.Summary
+import uk.co.kenfos.domain.TaskSummary
 import uk.co.kenfos.json.EventParser
-import uk.co.kenfos.json.TaskJsonSchema
+import uk.co.kenfos.json.TaskSummaryJson
 import uk.co.kenfos.json.serdes.JsonSerdes
 import java.util.*
 
@@ -30,18 +30,18 @@ class App {
         builder.stream(inputStream, Consumed.with(Serdes.String(), JsonSerdes.from(Message::class.java)))
             .mapValues { message -> eventParser.parse(message.eventType, message.value) }
             .groupByKey()
-            .aggregate({ Summary.empty }, { id, event, summary -> summary.update(id, event) }, materialized())
-            .mapValues { summary -> TaskJsonSchema(summary) }
+            .aggregate({ TaskSummary.empty }, { id, event, summary -> summary.update(id, event) }, materialized())
+            .mapValues { summary -> TaskSummaryJson(summary) }
             .toStream()
-            .to(outputStream, Produced.with(Serdes.String(), JsonSerdes.from(TaskJsonSchema::class.java)))
+            .to(outputStream, Produced.with(Serdes.String(), JsonSerdes.from(TaskSummaryJson::class.java)))
 
         KafkaStreams(builder.build(), properties()).start()
     }
 
-    private fun materialized(): Materialized<String, Summary, KeyValueStore<Bytes, ByteArray>> {
-        return Materialized.`as`<String, Summary, KeyValueStore<Bytes, ByteArray>>(aggregatedTasks)
+    private fun materialized(): Materialized<String, TaskSummary, KeyValueStore<Bytes, ByteArray>> {
+        return Materialized.`as`<String, TaskSummary, KeyValueStore<Bytes, ByteArray>>(aggregatedTasks)
             .withKeySerde(Serdes.String())
-            .withValueSerde(JsonSerdes.from(Summary::class.java))
+            .withValueSerde(JsonSerdes.from(TaskSummary::class.java))
     }
 
     private fun properties(): Properties {
