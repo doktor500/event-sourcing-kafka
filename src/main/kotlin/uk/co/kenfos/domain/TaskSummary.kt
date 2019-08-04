@@ -2,6 +2,9 @@ package uk.co.kenfos.domain
 
 import uk.co.kenfos.domain.Event.TaskAssigned
 import uk.co.kenfos.domain.Event.TaskReceived
+import uk.co.kenfos.json.Field
+import uk.co.kenfos.json.Json
+import uk.co.kenfos.json.JsonSchema
 
 data class TaskSummary(val id: String, val description: String) {
     companion object {
@@ -15,3 +18,10 @@ data class TaskSummary(val id: String, val description: String) {
         }
     }
 }
+
+fun TaskSummary.toJson() = Json(this, schema)
+
+val schema = JsonSchema.with(
+    Field(field = "id", type = "string"),
+    Field(field = "description", type = "string")
+)

@@ -11,8 +11,8 @@ import org.apache.kafka.streams.kstream.Produced
 import org.apache.kafka.streams.state.KeyValueStore
 import uk.co.kenfos.domain.Message
 import uk.co.kenfos.domain.TaskSummary
+import uk.co.kenfos.domain.toJson
 import uk.co.kenfos.json.EventParser
-import uk.co.kenfos.json.TaskSummaryJson
 import uk.co.kenfos.json.serdes.JsonSerdes
 import java.util.*
 
@@ -31,9 +31,9 @@ class App {
             .mapValues { message -> eventParser.parse(message.eventType, message.value) }
             .groupByKey()
             .aggregate({ TaskSummary.empty }, { id, event, summary -> summary.update(id, event) }, materialized())
-            .mapValues { summary -> TaskSummaryJson(summary) }
+            .mapValues(TaskSummary::toJson)
             .toStream()
-            .to(outputStream, Produced.with(Serdes.String(), JsonSerdes.from(TaskSummaryJson::class.java)))
+            .to(outputStream, Produced.with(Serdes.String(), JsonSerdes.Json()))
 
         KafkaStreams(builder.build(), properties()).start()
     }

@@ -11,7 +11,7 @@ CREATE INDEX IDX_TASK_ID ON EVENTS (task_id);
 INSERT INTO EVENTS (task_id, event_type, value, date_created) VALUES(
   '1',
   'task-received',
-  '{"title": "Investigate how to use event sourcing with Kafka"}',
+  '{"title": "Investigate event sourcing with Kafka"}',
   '2019-01-01 00:00:00'
 );
 
