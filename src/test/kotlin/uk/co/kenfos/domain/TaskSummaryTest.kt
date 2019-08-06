@@ -13,4 +13,13 @@ class TaskSummaryTest {
 
         assertEquals(TaskSummary("1", "Task: 'Learn kafka' is assigned to: 'David'"), updatedTaskSummary)
     }
+
+    @Test fun `task summary can be assigned multiple times`() {
+        val emptyTaskSummary = TaskSummary.empty
+        val taskSummary = emptyTaskSummary.update("1", TaskReceived(title = "Learn kafka"))
+        val updatedTaskSummary1 = taskSummary.update("1", TaskAssigned(name = "David"))
+        val updatedTaskSummary2 = updatedTaskSummary1.update("1", TaskAssigned(name = "Sara"))
+
+        assertEquals(TaskSummary("1", "Task: 'Learn kafka' is assigned to: 'Sara'"), updatedTaskSummary2)
+    }
 }

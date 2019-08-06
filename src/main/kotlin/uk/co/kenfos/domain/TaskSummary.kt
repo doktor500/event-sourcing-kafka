@@ -14,7 +14,14 @@ data class TaskSummary(val id: String, val description: String) {
     fun update(id: String, event: Event): TaskSummary {
         return when (event) {
             is TaskReceived -> TaskSummary(id, event.title)
-            is TaskAssigned -> TaskSummary(id, "Task: '$description' is assigned to: '${event.name}'")
+            is TaskAssigned -> TaskSummary(id, "Task: '${description()}' is assigned to: '${event.name}'")
+        }
+    }
+
+    private fun description(): String {
+        return when {
+            description.contains("'") -> description.split("'")[1]
+            else -> description
         }
     }
 }

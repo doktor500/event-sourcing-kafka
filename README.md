@@ -18,4 +18,6 @@ su - postgres
 psql
 \c eventsdb
 select * from events;
+
+kafka-console-producer --broker-list localhost:9092 --topic input-events --property "parse.key=true" --property "key.separator=:" < events.data
 ```
