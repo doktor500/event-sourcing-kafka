@@ -47,6 +47,7 @@ class App {
     private fun properties(): Properties {
         return Properties().apply {
             this["group.id"] = applicationId
+            this["cache.max.bytes.buffering"] = 0
             this[StreamsConfig.APPLICATION_ID_CONFIG] = applicationId
             this[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
         }
